@@ -13,7 +13,7 @@ import rx.Subscription;
  * 网络返回数据加工处理类
  */
 public class ApiMethods extends ApiFactory {
-    public  ApiStores apiStores;
+    private   ApiStores apiStores;
     private ApiMethods(){
         apiStores= ApiClient.create(ApiStores.class);
     }
