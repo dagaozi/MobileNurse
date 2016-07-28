@@ -14,11 +14,11 @@ public class MnApp extends BaseApp {
     @Override
     public void onCreate() {
         super.onCreate();
-        apiStores= ApiClient.getInstance().getRetrofit().create(ApiStores.class);
+        apiStores= ApiClient.create(ApiStores.class);
     }
     public static ApiStores getApiStores(){
         if(null==apiStores)
-            apiStores=ApiClient.getInstance().getRetrofit().create(ApiStores.class);
+            apiStores=ApiClient.create(ApiStores.class);
         return apiStores;
     }
 }

@@ -10,7 +10,15 @@
     tools:context="com.wyyy.mobilenurse.MainActivity">
 
     <TextView
+        android:id="@+id/tvTest"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Hello World!" />
+    <Button
+        android:id="@+id/btnTest"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/tvTest"
+        android:text="网络请求测试" />
+
 </RelativeLayout>

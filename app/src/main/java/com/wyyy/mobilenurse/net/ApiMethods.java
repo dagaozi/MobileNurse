@@ -1,7 +1,7 @@
 package com.wyyy.mobilenurse.net;
 
+import com.wyyy.corelibrary.net.ApiClient;
 import com.wyyy.corelibrary.net.ApiFactory;
-import com.wyyy.mobilenurse.base.MnApp;
 import com.wyyy.mobilenurse.model.TestModel;
 
 import rx.Observable;
@@ -15,7 +15,7 @@ import rx.Subscription;
 public class ApiMethods extends ApiFactory {
     public  ApiStores apiStores;
     private ApiMethods(){
-        apiStores=MnApp.getApiStores();
+        apiStores= ApiClient.create(ApiStores.class);
     }
       private static class SingletonHolder {
         private static final ApiMethods INSTANCE = new ApiMethods();
@@ -24,15 +24,15 @@ public class ApiMethods extends ApiFactory {
     {
         return  SingletonHolder.INSTANCE;
     }
+    public ApiStores getApiStores(){
+        if(null==apiStores)
+            apiStores=ApiClient.create(ApiStores.class);
+        return apiStores;
+    }
 
 
     public Subscription getTaoboData(Subscriber<TestModel> subscriber, String ip) {
         Observable observable = apiStores.getTaobaoData(ip);
         return toSubscribe(observable, subscriber);
-    }
-    public ApiStores getApiStores(){
-        if(null==apiStores)
-            apiStores=MnApp.getApiStores();
-        return apiStores;
     }
 }

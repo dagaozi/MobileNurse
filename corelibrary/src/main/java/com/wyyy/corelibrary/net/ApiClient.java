@@ -1,5 +1,8 @@
 package com.wyyy.corelibrary.net;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+
 import java.util.concurrent.TimeUnit;
 
 import okhttp3.OkHttpClient;
@@ -17,8 +20,23 @@ public class ApiClient {
     public static final String PRODUCT_URL = "http://www.weather.com.cn/";
     public static final String DEBUG_URL = "http://www.weather.com.cn/";
     private static final int DEFAULT_TIMEOUT = 10;
-    private Retrofit retrofit;
-    private ApiClient(){
+   // private Retrofit retrofit;
+
+/*    //在访问HttpMethods时创建单例
+    private static class SingletonHolder {
+        private static final ApiClient INSTANCE = new ApiClient();
+    }
+
+    //获取单例
+    public static final ApiClient getInstance() {
+        return SingletonHolder.INSTANCE;
+    }*/
+
+    public static <S> S create(Class<S> serviceClass){
+        Gson gson = new GsonBuilder()
+                .setDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")
+                .serializeNulls()
+                .create();
         //OKhttp的日志系统
         HttpLoggingInterceptor httpLoggingInterceptor = new HttpLoggingInterceptor();
         httpLoggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
@@ -26,24 +44,16 @@ public class ApiClient {
         OkHttpClient.Builder httpClientBuilder = new OkHttpClient.Builder().addInterceptor(httpLoggingInterceptor);
         httpClientBuilder.connectTimeout(DEFAULT_TIMEOUT, TimeUnit.SECONDS);
         httpClientBuilder.readTimeout(DEFAULT_TIMEOUT, TimeUnit.SECONDS);
-         retrofit = new Retrofit.Builder()
+      Retrofit  retrofit = new Retrofit.Builder()
                 .client(httpClientBuilder.build())
                 .baseUrl(DEBUG_URL)
                 .addConverterFactory(GsonConverterFactory.create())
+                //.addConverterFactory(GsonConverterFactory.create(gson))
                 .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
                 .build();
+       return retrofit.create(serviceClass);
     }
-    //在访问HttpMethods时创建单例
-    private static class SingletonHolder {
-        private static final ApiClient INSTANCE = new ApiClient();
-    }
-
-    //获取单例
-    public static ApiClient getInstance() {
-        return SingletonHolder.INSTANCE;
-    }
-
-    public Retrofit getRetrofit() {
+ /*   public Retrofit getRetrofit() {
         return retrofit;
-    }
+    }*/
 }
